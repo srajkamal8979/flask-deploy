@@ -28,6 +28,7 @@ def webhook():
     return r
 
 def makeWebhookResult(req):
+    print("this is mine"+ req.get("result").get("action"))
     if req.get("result").get("action") != "shipping.cost":
         return {}
     result = req.get("result")
