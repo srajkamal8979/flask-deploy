@@ -60,7 +60,7 @@ def makeWebhookResult(req):
         for row in rows:
             speech_text.append(row[0])
     con.close()
-    speech="The candidates for skill  "+zone+ "  are :  " + "{}.".format(', '.join(speech_text))        
+    speech="The candidates for skill  "+zone+ "  are :  " + "{}.".format('\n '.join(speech_text))        
             
         #print(row[0],row[1],row[2],row[3])
     #print(rows)
