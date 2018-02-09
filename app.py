@@ -59,7 +59,8 @@ def makeWebhookResult(req):
         rows = cur.fetchall()
         for row in rows:
             speech_text.append(row[0])
-  speech="The candidates for skill"+zone+ "are" + "{}.".format(', '.join(speech_text))        
+    con.close()
+    speech="The candidates for skill"+zone+ "are" + "{}.".format(', '.join(speech_text))        
             
         #print(row[0],row[1],row[2],row[3])
     #print(rows)
