@@ -1,18 +1,5 @@
 #!/usr/bin/env python
 import sqlite3 as sql
-con = sql.connect('database.db')
-print ("Opened database successfully")
-con.execute('CREATE TABLE mytable (name TEXT, addr TEXT, city TEXT, pin TEXT)')
-print ("Table created successfully")
-with sql.connect("database.db") as con:
-    cur = con.cursor()
-    cur.execute("INSERT INTO mytable (name,addr,city,pin) VALUES (?,?,?,?)",("nitin","inngr","python",102))
-    cur.execute("INSERT INTO mytable (name,addr,city,pin) VALUES (?,?,?,?)",("Raj","inngr","python",102))
-    cur.execute("INSERT INTO mytable (name,addr,city,pin) VALUES (?,?,?,?)",("mona","inngr","java",102))
-    cur.execute("INSERT INTO mytable (name,addr,city,pin) VALUES (?,?,?,?)",("mona","inngr","jsf",102))
-    con.commit()
-    print("Record successfully added")
-con.close()
 import urllib
 import json
 import os
@@ -23,7 +10,6 @@ from flask import make_response
 
 # Flask app should start in global layout
 app = Flask(__name__)
-
 
 @app.route('/webhook', methods=['POST'])
 def webhook():
@@ -42,6 +28,20 @@ def webhook():
 
 def makeWebhookResult(req):
     speech_text=[]
+    con = sql.connect('database.db')
+    print ("Opened database successfully")
+    con.execute('CREATE TABLE mytable (name TEXT, addr TEXT, city TEXT, pin TEXT)')
+    print ("Table created successfully")
+    with sql.connect("database.db") as con:
+        cur = con.cursor()
+        cur.execute("INSERT INTO mytable (name,addr,city,pin) VALUES (?,?,?,?)",("nitin","inngr","python",102))
+        cur.execute("INSERT INTO mytable (name,addr,city,pin) VALUES (?,?,?,?)",("Raj","inngr","python",102))
+        cur.execute("INSERT INTO mytable (name,addr,city,pin) VALUES (?,?,?,?)",("mona","inngr","java",102))
+        cur.execute("INSERT INTO mytable (name,addr,city,pin) VALUES (?,?,?,?)",("mona","inngr","jsf",102))
+        con.commit()
+        print("Record successfully added")
+    con.close()
+    
     print("this is mine"+ req.get("result").get("action"))
     if req.get("result").get("action") != "shipping.cost":
         return {}
@@ -49,7 +49,7 @@ def makeWebhookResult(req):
     parameters = result.get("parameters")
     zone = parameters.get("shipping-zone")
 
-    cost = {'Europe':100, 'North America':200, 'South America':300, 'Asia':400, 'Africa':500}
+    #cost = {'Europe':100, 'North America':200, 'South America':300, 'Asia':400, 'Africa':500}
     
     with sql.connect("database.db") as con:
         cur = con.cursor()
