@@ -1,5 +1,18 @@
 #!/usr/bin/env python
-
+import sqlite3 as sql
+con = sql.connect('database.db')
+print ("Opened database successfully")
+con.execute('CREATE TABLE mytable (name TEXT, addr TEXT, city TEXT, pin TEXT)')
+print ("Table created successfully")
+with sql.connect("database.db") as con:
+    cur = con.cursor()
+    cur.execute("INSERT INTO mytable (name,addr,city,pin) VALUES (?,?,?,?)",("nitin","inngr","python",102))
+    cur.execute("INSERT INTO mytable (name,addr,city,pin) VALUES (?,?,?,?)",("Raj","inngr","python",102))
+    cur.execute("INSERT INTO mytable (name,addr,city,pin) VALUES (?,?,?,?)",("mona","inngr","java",102))
+    cur.execute("INSERT INTO mytable (name,addr,city,pin) VALUES (?,?,?,?)",("mona","inngr","jsf",102))
+    con.commit()
+    print("Record successfully added")
+con.close()
 import urllib
 import json
 import os
@@ -28,6 +41,7 @@ def webhook():
     return r
 
 def makeWebhookResult(req):
+    speech_text=[]
     print("this is mine"+ req.get("result").get("action"))
     if req.get("result").get("action") != "shipping.cost":
         return {}
@@ -36,8 +50,21 @@ def makeWebhookResult(req):
     zone = parameters.get("shipping-zone")
 
     cost = {'Europe':100, 'North America':200, 'South America':300, 'Asia':400, 'Africa':500}
+    
+    with sql.connect("database.db") as con:
+        cur = con.cursor()
+        con.row_factory = sql.Row
+        cur = con.cursor()
+        cur.execute("select * from mytable where city= ?",[zone])
+        rows = cur.fetchall()
+        for row in rows:
+            speech_text.append(row[0])
+  speech="The candidates for skill"+zone+ "are" + "{}.".format(', '.join(speech_text))        
+            
+        #print(row[0],row[1],row[2],row[3])
+    #print(rows)
 
-    speech = "The cost of shipping to " + zone + " is " + str(cost[zone]) + " euros."
+    #speech = "The cost of shipping to " + zone + " is " + str(cost[zone]) + " euros."
 
     print("Response:")
     print(speech)
