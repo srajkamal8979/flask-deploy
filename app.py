@@ -28,16 +28,23 @@ def webhook():
 
 def makeWebhookResult(req):
     speech_text=[]
+    test_code=[]
     con = sql.connect('database.db')
     print ("Opened database successfully")
     con.execute('CREATE TABLE IF NOT EXISTS mytable (name TEXT, addr TEXT, city TEXT, pin TEXT)')
     print ("Table created successfully")
     with sql.connect("database.db") as con:
         cur = con.cursor()
-        cur.execute("INSERT INTO mytable (name,addr,city,pin) VALUES (?,?,?,?)",("nitin","inngr","python",102))
-        cur.execute("INSERT INTO mytable (name,addr,city,pin) VALUES (?,?,?,?)",("Raj","inngr","python",102))
-        cur.execute("INSERT INTO mytable (name,addr,city,pin) VALUES (?,?,?,?)",("mona","inngr","java",102))
-        cur.execute("INSERT INTO mytable (name,addr,city,pin) VALUES (?,?,?,?)",("mona","inngr","jsf",102))
+        cur.execute("select * from mytable")
+        rows = cur.fetchall()
+        for row in rows:
+            test_code.append(row[3])
+        if 102 not in test_code:
+            cur.execute("INSERT INTO mytable (name,addr,city,pin) VALUES (?,?,?,?)",("Raj","inngr","python",102))
+        elif 103 not in test_code:
+            cur.execute("INSERT INTO mytable (name,addr,city,pin) VALUES (?,?,?,?)",("mona","inngr","java",103))
+        elif 104 not in test_code:
+            cur.execute("INSERT INTO mytable (name,addr,city,pin) VALUES (?,?,?,?)",("mona","inngr","jsf",104))
         con.commit()
         print("Record successfully added")
     con.close()
