@@ -17,6 +17,8 @@ print ("Table created successfully")
 with sql.connect("database.db") as con:
     cur = con.cursor()
     cur.execute("INSERT INTO mytable (name,addr,city,pin) VALUES (?,?,?,?)",("Raj","inngr","python",102))
+    cur.execute("INSERT INTO mytable (name,addr,city,pin) VALUES (?,?,?,?)",("Nitin","inngr","python",101))
+    cur.execute("INSERT INTO mytable (name,addr,city,pin) VALUES (?,?,?,?)",("Varun","inngr","html",105))
     cur.execute("INSERT INTO mytable (name,addr,city,pin) VALUES (?,?,?,?)",("mona","inngr","java",103))
     cur.execute("INSERT INTO mytable (name,addr,city,pin) VALUES (?,?,?,?)",("mona","inngr","jsf",104))
     con.commit()
