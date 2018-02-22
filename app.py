@@ -20,7 +20,7 @@ with sql.connect("database.db") as con:
     cur.execute("INSERT INTO mytable (name,addr,city,pin) VALUES (?,?,?,?)",("mona","inngr","java",103))
     cur.execute("INSERT INTO mytable (name,addr,city,pin) VALUES (?,?,?,?)",("mona","inngr","jsf",104))
     con.commit()
-    print("Record successfully added"
+    print("Record successfully added")
 con.close()
 
 @app.route('/webhook', methods=['POST'])
