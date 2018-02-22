@@ -11,17 +11,17 @@ from flask import make_response
 # Flask app should start in global layout
 app = Flask(__name__)
 con = sql.connect('database.db')
-    print ("Opened database successfully")
-    con.execute('CREATE TABLE IF NOT EXISTS mytable (name TEXT, addr TEXT, city TEXT, pin TEXT)')
-    print ("Table created successfully")
-    with sql.connect("database.db") as con:
-        cur = con.cursor()
-        cur.execute("INSERT INTO mytable (name,addr,city,pin) VALUES (?,?,?,?)",("Raj","inngr","python",102))
-        cur.execute("INSERT INTO mytable (name,addr,city,pin) VALUES (?,?,?,?)",("mona","inngr","java",103))
-        cur.execute("INSERT INTO mytable (name,addr,city,pin) VALUES (?,?,?,?)",("mona","inngr","jsf",104))
-        con.commit()
-        print("Record successfully added")
-    con.close()
+print ("Opened database successfully")
+con.execute('CREATE TABLE IF NOT EXISTS mytable (name TEXT, addr TEXT, city TEXT, pin TEXT)')
+print ("Table created successfully")
+with sql.connect("database.db") as con:
+    cur = con.cursor()
+    cur.execute("INSERT INTO mytable (name,addr,city,pin) VALUES (?,?,?,?)",("Raj","inngr","python",102))
+    cur.execute("INSERT INTO mytable (name,addr,city,pin) VALUES (?,?,?,?)",("mona","inngr","java",103))
+    cur.execute("INSERT INTO mytable (name,addr,city,pin) VALUES (?,?,?,?)",("mona","inngr","jsf",104))
+    con.commit()
+    print("Record successfully added"
+con.close()
 
 @app.route('/webhook', methods=['POST'])
 def webhook():
