@@ -26,6 +26,12 @@ app = Flask(__name__)
 
 @app.route('/webhook', methods=['POST'])
 def webhook():
+    con = cx_Oracle.connect('BSCRO/b3c40@10.188.193.136:1522/devapex5')
+    cur=con.cursor()
+    if con:
+        print ("Connected database successfully")
+    else:
+        print("connect failed")
     req = request.get_json(silent=True, force=True)
 
     print("Request:")
@@ -50,12 +56,8 @@ def makeWebhookResult(req):
     result = req.get("result")
     parameters = result.get("parameters")
     zone = parameters.get("shipping-zone")
-    con = cx_Oracle.connect('BSCRO/b3c40@10.188.193.136:1522/devapex5')
-    cur=con.cursor()
-    if con:
-        print ("Connected database successfully")
-    else:
-        print("connect failed")
+    
+    
     #cost = {'Europe':100, 'North America':200, 'South America':300, 'Asia':400, 'Africa':500}
     cur.prepare('select * from bsc.sdf_user_skills_v where skill_name = :skill')
     cur.execute(None, {'skill': zone})
