@@ -31,6 +31,7 @@ def hello_world():
     return 'Hello World!'
 @app.route('/webhook', methods=['POST'])
 def webhook():
+    speech_text=[]
     con = sql.connect("database.db")
     cur=con.cursor()
     if con:
@@ -38,8 +39,14 @@ def webhook():
     else:
         print("connect failed")
     result=cur.execute("select * from mytable")
-    print(result)
-    return result
+    rows=result.fetchall()
+    for row in rows:
+        speech_text.append(row[1])
+    speech="The candidates are :  " + "{}.".format(','.join(speechtext))
+    return {
+        "speech": speech
+    }
+    #return result
        
 #     req = request.get_json(silent=True, force=True)
 
@@ -92,13 +99,13 @@ def webhook():
 #     print("Response:")
 #     print(speech)
 
-    return {
-        "speech": speech,
-        "displayText": "It's done",
-        #"data": {},
-        # "contextOut": [],
-        "source": "apiai-onlinestore-shipping"
-    }
+#     return {
+#         "speech": speech,
+#         "displayText": "It's done",
+#         #"data": {},
+#         # "contextOut": [],
+#         "source": "apiai-onlinestore-shipping"
+#     }
 
 
 if __name__ == '__main__':
