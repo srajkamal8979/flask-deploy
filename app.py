@@ -65,7 +65,8 @@ def makeWebhookResult(req):
     print(skillset)
 #     cur.prepare('select * from mytable where skill = :skills-list')
 #     cur.execute(None, {'skill': skillset})
-    cur.execute('select * from mytable where skill = ?',skillset)
+    print("Executing Query")
+    cur.execute("select * from mytable where skill = ?",skillset)
     print(cur)
     rows = cur.fetchall()
     for row in rows:
