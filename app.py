@@ -37,56 +37,60 @@ def webhook():
         print ("Connected database successfully")
     else:
         print("connect failed")
-    req = request.get_json(silent=True, force=True)
-
-    print("Request:")
-    print(json.dumps(req, indent=4))
-
-    res = makeWebhookResult(req)
-
-    res = json.dumps(res, indent=4)
-    print(res)
-    r = make_response(res)
-    r.headers['Content-Type'] = 'application/json'
-    return r
-
-def makeWebhookResult(req):
-    speech_text=[]
-    test_code=[]
-    
-    
-    print("this is mine"+ req.get("result").get("action"))
-    result = req.get("result")
+    result=cur.execute("select * from mytable")
     print(result)
-    parameters = result.get("parameters")
-    skillset = parameters.get("skills-list")
-#     cur.prepare('select * from mytable where skill = :skills-list')
-#     cur.execute(None, {'skill': skillset})
-    cur.execute('select * from mytable where skill = :skillset')
-    rows = cur.fetchall()
-    for row in rows:
-        speech_text.append(row[0])
+    return result
+       
+#     req = request.get_json(silent=True, force=True)
+
+#     print("Request:")
+#     print(json.dumps(req, indent=4))
+
+#     res = makeWebhookResult(req)
+
+#     res = json.dumps(res, indent=4)
+#     print(res)
+#     r = make_response(res)
+#     r.headers['Content-Type'] = 'application/json'
+#     return r
+
+# def makeWebhookResult(req):
+#     speech_text=[]
+#     test_code=[]
     
-#     with sql.connect("database.db") as con:
-#         cur = con.cursor()
-#         con.row_factory = sql.Row
-#         cur = con.cursor()
-#         cur.execute("select * from mytable where city= ?",[zone])
-#         rows = cur.fetchall()
-#         for row in rows:
-#             speech_text.append(row[0])
-    con.close()
-    speechtext=list(set(speech_text))
-    print(speechtext)
-    speech="The candidates for skill  "+skillset+ "  are :  " + "{}.".format(','.join(speechtext))        
+    
+#     print("this is mine"+ req.get("result").get("action"))
+#     result = req.get("result")
+#     print(result)
+#     parameters = result.get("parameters")
+#     skillset = parameters.get("skills-list")
+# #     cur.prepare('select * from mytable where skill = :skills-list')
+# #     cur.execute(None, {'skill': skillset})
+#     cur.execute('select * from mytable where skill = :skillset')
+#     rows = cur.fetchall()
+#     for row in rows:
+#         speech_text.append(row[0])
+    
+# #     with sql.connect("database.db") as con:
+# #         cur = con.cursor()
+# #         con.row_factory = sql.Row
+# #         cur = con.cursor()
+# #         cur.execute("select * from mytable where city= ?",[zone])
+# #         rows = cur.fetchall()
+# #         for row in rows:
+# #             speech_text.append(row[0])
+#     con.close()
+#     speechtext=list(set(speech_text))
+#     print(speechtext)
+#     speech="The candidates for skill  "+skillset+ "  are :  " + "{}.".format(','.join(speechtext))        
             
-        #print(row[0],row[1],row[2],row[3])
-    #print(rows)
+#         #print(row[0],row[1],row[2],row[3])
+#     #print(rows)
 
-    #speech = "The cost of shipping to " + zone + " is " + str(cost[zone]) + " euros."
+#     #speech = "The cost of shipping to " + zone + " is " + str(cost[zone]) + " euros."
 
-    print("Response:")
-    print(speech)
+#     print("Response:")
+#     print(speech)
 
     return {
         "speech": speech,
