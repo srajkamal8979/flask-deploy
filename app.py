@@ -23,7 +23,9 @@ app = Flask(__name__)
 #     con.commit()
 #     print("Record successfully added")
 # con.close()
-
+@app.route('/')
+def hello_world():
+    return 'Hello World!'
 @app.route('/webhook', methods=['POST'])
 def webhook():
     con = cx_Oracle.connect('BSCRO/b3c40@10.188.193.136:1522/devapex5')
