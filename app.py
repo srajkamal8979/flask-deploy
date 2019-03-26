@@ -70,6 +70,7 @@ def makeWebhookResult(req):
     print(result)
     parameters = result.get("parameters")
     skillset = parameters.get("skills-list")
+    print(skillset)
 #     cur.prepare('select * from mytable where skill = :skills-list')
 #     cur.execute(None, {'skill': skillset})
     cur.execute('select * from mytable where skill = ?',[skillset])
