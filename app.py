@@ -42,7 +42,7 @@ def webhook():
     rows=result.fetchall()
     for row in rows:
         speech_text.append(row[1])
-    speech="The candidates are :  " + "{}.".format(','.join(speechtext))
+    speech="The candidates are :  " + "{}.".format(','.join(speech_text))
     print(speech)
     return {
         "speech": speech
