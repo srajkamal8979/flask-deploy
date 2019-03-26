@@ -93,6 +93,7 @@ def makeWebhookResult(req):
 
     print("Response:")
     print(speech)
+    con.close()
 
     return {
         "speech": speech,
@@ -101,7 +102,7 @@ def makeWebhookResult(req):
         # "contextOut": [],
         "source": "skills database"
     }
-
+    
 
 
 if __name__ == '__main__':
