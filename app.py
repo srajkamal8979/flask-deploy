@@ -62,7 +62,7 @@ def makeWebhookResult(req):
     skillset = parameters.get("skills-list")
 #     cur.prepare('select * from mytable where skill = :skills-list')
 #     cur.execute(None, {'skill': skillset})
-    cur.execute('select * from mytable where skill = :skillset'
+    cur.execute('select * from mytable where skill = :skillset')
     rows = cur.fetchall()
     for row in rows:
         speech_text.append(row[0])
