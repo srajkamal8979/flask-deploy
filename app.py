@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-#import sqlite3 as sql
+import sqlite3 as sql
 import urllib
 import json
 import os
@@ -11,24 +11,27 @@ from flask import make_response
 # Flask app should start in global layout
 app = Flask(__name__)
 
-# con.execute('CREATE TABLE IF NOT EXISTS mytable (name TEXT, addr TEXT, city TEXT, pin TEXT)')
+
 # print ("Table created successfully")
-# with sql.connect("database.db") as con:
-#     cur = con.cursor()
-#     cur.execute("INSERT INTO mytable (name,addr,city,pin) VALUES (?,?,?,?)",("Raj","inngr","python",102))
-#     cur.execute("INSERT INTO mytable (name,addr,city,pin) VALUES (?,?,?,?)",("Nitin","inngr","python",101))
-#     cur.execute("INSERT INTO mytable (name,addr,city,pin) VALUES (?,?,?,?)",("Varun","inngr","html",105))
-#     cur.execute("INSERT INTO mytable (name,addr,city,pin) VALUES (?,?,?,?)",("mona","inngr","java",103))
-#     cur.execute("INSERT INTO mytable (name,addr,city,pin) VALUES (?,?,?,?)",("mona","inngr","jsf",104))
-#     con.commit()
-#     print("Record successfully added")
-# con.close()
+@app.route('/insert')
+def insert_data():
+    with sql.connect("database.db") as con:
+        con.execute('CREATE TABLE IF NOT EXISTS mytable (id INTEGER,name TEXT, skill TEXT,UNIQUE(id)) ')
+        cur = con.cursor()
+        cur.execute("INSERT INTO mytable (id,name,skill) VALUES (?,?,?)",(1,"user1","python"))
+        cur.execute("INSERT INTO mytable (id,name,skill) VALUES (?,?,?)",(2,"user2","python"))
+        cur.execute("INSERT INTO mytable (id,name,skill) VALUES (?,?,?)",(3,"user3","html"))
+        cur.execute("INSERT INTO mytable (id,name,skill) VALUES (?,?,?)",(4,"user4","java"))
+        cur.execute("INSERT INTO mytable (id,name,skill) VALUES (?,?,?)",(5,"user5","jsf"))
+        con.commit()
+        print("Record successfully added")
+        con.close()
 @app.route('/')
 def hello_world():
     return 'Hello World!'
 @app.route('/webhook', methods=['POST'])
 def webhook():
-    con = cx_Oracle.connect('BSCRO/b3c40@10.188.193.136:1522/devapex5')
+    con = sql.connect("database.db")
     cur=con.cursor()
     if con:
         print ("Connected database successfully")
@@ -53,16 +56,13 @@ def makeWebhookResult(req):
     
     
     print("this is mine"+ req.get("result").get("action"))
-    if req.get("result").get("action") != "shipping.cost":
-        return {}
     result = req.get("result")
+    print(result)
     parameters = result.get("parameters")
-    zone = parameters.get("shipping-zone")
-    
-    
-    #cost = {'Europe':100, 'North America':200, 'South America':300, 'Asia':400, 'Africa':500}
-    cur.prepare('select * from bsc.sdf_user_skills_v where skill_name = :skill')
-    cur.execute(None, {'skill': zone})
+    skillset = parameters.get("skills-list")
+#     cur.prepare('select * from mytable where skill = :skills-list')
+#     cur.execute(None, {'skill': skillset})
+    cur.execute('select * from mytable where skill = :skillset'
     rows = cur.fetchall()
     for row in rows:
         speech_text.append(row[0])
@@ -78,7 +78,7 @@ def makeWebhookResult(req):
     con.close()
     speechtext=list(set(speech_text))
     print(speechtext)
-    speech="The candidates for skill  "+zone+ "  are :  " + "{}.".format(','.join(speechtext))        
+    speech="The candidates for skill  "+skillset+ "  are :  " + "{}.".format(','.join(speechtext))        
             
         #print(row[0],row[1],row[2],row[3])
     #print(rows)
