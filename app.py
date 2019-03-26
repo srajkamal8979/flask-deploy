@@ -66,6 +66,7 @@ def makeWebhookResult(req):
 #     cur.prepare('select * from mytable where skill = :skills-list')
 #     cur.execute(None, {'skill': skillset})
     cur.execute('select * from mytable where skill = ?',skillset)
+    print(cur)
     rows = cur.fetchall()
     for row in rows:
         speech_text.append(row[1])
@@ -79,6 +80,7 @@ def makeWebhookResult(req):
 #         for row in rows:
 #             speech_text.append(row[0])
     #con.close()
+    print(speech_text)
     speechtext=list(set(speech_text))
     print(speechtext)
     speech="The candidates for skill  "+skillset+ "  are :  " + "{}.".format(','.join(speechtext))        
