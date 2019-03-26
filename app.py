@@ -10,17 +10,19 @@ from flask import make_response
 
 # Flask app should start in global layout
 app = Flask(__name__)
-with sql.connect("database.db") as con:
-    con.execute('CREATE TABLE IF NOT EXISTS mytable (id INTEGER,name TEXT, skill TEXT,UNIQUE(id)) ')
-    cur = con.cursor()
-    cur.execute("INSERT INTO mytable (id,name,skill) VALUES (?,?,?)",(1,"user1","python"))
-    cur.execute("INSERT INTO mytable (id,name,skill) VALUES (?,?,?)",(2,"user2","python"))
-    cur.execute("INSERT INTO mytable (id,name,skill) VALUES (?,?,?)",(3,"user3","html"))
-    cur.execute("INSERT INTO mytable (id,name,skill) VALUES (?,?,?)",(4,"user4","java"))
-    cur.execute("INSERT INTO mytable (id,name,skill) VALUES (?,?,?)",(5,"user5","jsf"))
-    con.commit()
-    print("Record successfully added")
-    con.close()
+@app.route('/insert')
+def insert_data():
+    with sql.connect("database.db") as con:
+        con.execute('CREATE TABLE IF NOT EXISTS mytable (id INTEGER,name TEXT, skill TEXT,UNIQUE(id)) ')
+        cur = con.cursor()
+        cur.execute("INSERT INTO mytable (id,name,skill) VALUES (?,?,?)",(1,"user1","python"))
+        cur.execute("INSERT INTO mytable (id,name,skill) VALUES (?,?,?)",(2,"user2","python"))
+        cur.execute("INSERT INTO mytable (id,name,skill) VALUES (?,?,?)",(3,"user3","html"))
+        cur.execute("INSERT INTO mytable (id,name,skill) VALUES (?,?,?)",(4,"user4","java"))
+        cur.execute("INSERT INTO mytable (id,name,skill) VALUES (?,?,?)",(5,"user5","jsf"))
+        con.commit()
+        print("Record successfully added")
+        con.close()
 @app.route('/')
 def hello_world():
     return 'Hello World!'
@@ -40,9 +42,11 @@ def webhook():
     speechtext=list(set(speech_text))
     speech="The candidates are :  " + "{}.".format(','.join(speechtext))
     print(speech)
-    return {
-        "speech": speech
-    }
+    op={'speech':speech}
+    res=json.dumps(op,indent=4)
+    r=make_response(res)
+    r.headers['Content-Type'] = 'application/json'
+    return r
     #return result
        
 #     req = request.get_json(silent=True, force=True)
