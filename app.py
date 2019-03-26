@@ -28,13 +28,6 @@ def hello_world():
     return 'Hello World!'
 @app.route('/webhook', methods=['POST'])
 def webhook():
-    #peech_text=[]
-    con = sql.connect("database.db")
-    cur=con.cursor()
-    if con:
-        print ("Connected database successfully")
-    else:
-        print("connect failed")
 #     result=cur.execute("select * from mytable")
 #     rows=result.fetchall()
 #     for row in rows:
@@ -50,12 +43,9 @@ def webhook():
     #return result
        
     req = request.get_json(silent=True, force=True)
-
     print("Request:")
     print(json.dumps(req, indent=4))
-
     res = makeWebhookResult(req)
-
     res = json.dumps(res, indent=4)
     print(res)
     r = make_response(res)
@@ -63,6 +53,8 @@ def webhook():
     return r
 
 def makeWebhookResult(req):
+    con = sql.connect("database.db")
+    cur=con.cursor()
     speech_text=[]
     test_code=[]
     #print("this is mine"+ req.get("result").get("action"))
