@@ -75,7 +75,7 @@ def makeWebhookResult(req):
     cur.execute('select * from mytable where skill = ?',['skillset'])
     rows = cur.fetchall()
     for row in rows:
-        speech_text.append(row[0])
+        speech_text.append(row[1])
     
 #     with sql.connect("database.db") as con:
 #         cur = con.cursor()
