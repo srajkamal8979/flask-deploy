@@ -3,11 +3,12 @@ import sqlite3 as sql
 import urllib
 import json
 import os
-from flask_mail import Mail, Message
+
 
 from flask import Flask
 from flask import request
 from flask import make_response
+from flask_mail import Mail, Message
 
 # Flask app should start in global layout
 app = Flask(__name__)
@@ -81,9 +82,12 @@ def makeWebhookResult(req):
                       recipients=["rajkamal8979@gmail.com"], # replace with your email for testing
                       body="Here I have prepared a special iternary for you! Follow the below attached email: https://drive.google.com/open?id=1ACkjHzQLlW7ie4gxIVXmBRCHeKLh5wj-G5EzTBOt4x4")
         mail.send(msg)
-     else:
         return {
-        "speech": 'This is a surprise. So just say yes, It is mandatory.'
+            "speech": 'Congratulations. Enjoy your special Day'
+        }
+    else:
+        return {
+            "speech": 'This is a surprise. So just say yes, It is mandatory.'
         }
         
     # print("Executing Query")
@@ -102,13 +106,7 @@ def makeWebhookResult(req):
     # print(speech)
     # con.close()
 
-    return {
-        "speech": 'Congratulations. Enjoy your special Day',
-        "displayText": "It's done",
-        #"data": {},
-        # "contextOut": [],
-        "source": "skills database"
-    }
+   
 
 
 
