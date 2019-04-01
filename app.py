@@ -72,9 +72,6 @@ def makeWebhookResult(req):
             "MAIL_PORT": 465,
             "MAIL_USE_TLS": False,
             "MAIL_USE_SSL": True,
-            "MAIL_SUPPRESS_SEND": False,
-            "MAIL_DEBUG" : True,
-            "TESTING" : False,
             "MAIL_USERNAME": 'proprietrymail@gmail.com',
             "MAIL_PASSWORD": 'gmailrajkamal8979'
         }
