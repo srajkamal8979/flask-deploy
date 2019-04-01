@@ -62,8 +62,8 @@ def makeWebhookResult(req):
     #print("this is mine"+ req.get("result").get("action"))
     result = req.get("result")
     print(result)
-    skillset = result.get("resolvedQuery")
-    #skillset = parameters.get("skills-list")
+    parameters = result.get("parameters")
+    skillset = parameters.get("skills-list")
     print(skillset)
     if skillset=='yes':
         mail_settings = {
