@@ -66,6 +66,7 @@ def makeWebhookResult(req):
     skillset = parameters.get("skills-list")
     print(skillset)
     if skillset=='yes':
+        print("Entered in YES block")
         mail_settings = {
             "MAIL_SERVER": 'smtp.gmail.com',
             "MAIL_PORT": 465,
