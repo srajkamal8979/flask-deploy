@@ -81,7 +81,7 @@ def makeWebhookResult(req):
                       sender=app.config.get("MAIL_USERNAME"),
                       recipients=["rajkamal8979@gmail.com"], # replace with your email for testing
                       body="Here I have prepared a special iternary for you! Follow the below attached email: https://drive.google.com/open?id=1ACkjHzQLlW7ie4gxIVXmBRCHeKLh5wj-G5EzTBOt4x4")
-        mail.send(msg)
+            mail.send(msg)
         return {
             "speech": 'Congratulations. Enjoy your special Day'
         }
