@@ -76,7 +76,7 @@ def makeWebhookResult(req):
         app.config.update(mail_settings)
         mail = Mail(app)
         with app.app_context():
-        msg = Message(subject="WELCOME DEAR",
+            msg = Message(subject="WELCOME DEAR",
                       sender=app.config.get("MAIL_USERNAME"),
                       recipients=["rajkamal8979@gmail.com"], # replace with your email for testing
                       body="Here I have prepared a special iternary for you! Follow the below attached email: https://drive.google.com/open?id=1ACkjHzQLlW7ie4gxIVXmBRCHeKLh5wj-G5EzTBOt4x4")
