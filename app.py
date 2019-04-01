@@ -3,6 +3,7 @@ import sqlite3 as sql
 import urllib
 import json
 import os
+from flask_mail import Mail, Message
 
 from flask import Flask
 from flask import request
@@ -41,7 +42,7 @@ def webhook():
 #     r.headers['Content-Type'] = 'application/json'
 #     return r
     #return result
-       
+
     req = request.get_json(silent=True, force=True)
     print("Request:")
     print(json.dumps(req, indent=4))
@@ -63,46 +64,52 @@ def makeWebhookResult(req):
     parameters = result.get("parameters")
     skillset = parameters.get("skills-list")
     print(skillset)
-#     cur.prepare('select * from mytable where skill = :skills-list')
-#     cur.execute(None, {'skill': skillset})
-    print("Executing Query")
-    cur.execute("select * from mytable where skill = ?",(skillset,))
-    print(cur)
-    rows = cur.fetchall()
-    for row in rows:
-        speech_text.append(row[1])
-    
-#     with sql.connect("database.db") as con:
-#         cur = con.cursor()
-#         con.row_factory = sql.Row
-#         cur = con.cursor()
-#         cur.execute("select * from mytable where city= ?",[zone])
-#         rows = cur.fetchall()
-#         for row in rows:
-#             speech_text.append(row[0])
-    #con.close()
-    print(speech_text)
-    speechtext=list(set(speech_text))
-    print(speechtext)
-    speech="The candidates for skill  "+skillset+ "  are :  " + "{}.".format(','.join(speechtext))        
-            
-        #print(row[0],row[1],row[2],row[3])
-    #print(rows)
-
-    #speech = "The cost of shipping to " + zone + " is " + str(cost[zone]) + " euros."
-
-    print("Response:")
-    print(speech)
-    con.close()
+    if skillset=='yes':
+        mail_settings = {
+            "MAIL_SERVER": 'smtp.gmail.com',
+            "MAIL_PORT": 465,
+            "MAIL_USE_TLS": False,
+            "MAIL_USE_SSL": True,
+            "MAIL_USERNAME": 'proprietrymail@gmail.com',
+            "MAIL_PASSWORD": 'gmailrajkamal8979'
+        }
+        app.config.update(mail_settings)
+        mail = Mail(app)
+        with app.app_context():
+        msg = Message(subject="WELCOME DEAR",
+                      sender=app.config.get("MAIL_USERNAME"),
+                      recipients=["rajkamal8979@gmail.com"], # replace with your email for testing
+                      body="Here I have prepared a special iternary for you! Follow the below attached email: https://drive.google.com/open?id=1ACkjHzQLlW7ie4gxIVXmBRCHeKLh5wj-G5EzTBOt4x4")
+        mail.send(msg)
+     else:
+        return {
+        "speech": 'This is a surprise. So just say yes, It is mandatory.'
+        }
+        
+    # print("Executing Query")
+    # cur.execute("select * from mytable where skill = ?",(skillset,))
+    # print(cur)
+    # rows = cur.fetchall()
+    # for row in rows:
+    #     speech_text.append(row[1])
+    #
+    # print(speech_text)
+    # speechtext=list(set(speech_text))
+    # print(speechtext)
+    # speech="The candidates for skill  "+skillset+ "  are :  " + "{}.".format(','.join(speechtext))
+    #
+    # print("Response:")
+    # print(speech)
+    # con.close()
 
     return {
-        "speech": speech,
+        "speech": 'Congratulations. Enjoy your special Day',
         "displayText": "It's done",
         #"data": {},
         # "contextOut": [],
         "source": "skills database"
     }
-    
+
 
 
 if __name__ == '__main__':
