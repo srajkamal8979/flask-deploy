@@ -75,8 +75,10 @@ def makeWebhookResult(req):
             "MAIL_USERNAME": 'proprietrymail@gmail.com',
             "MAIL_PASSWORD": 'gmailrajkamal8979'
         }
+        print("Initialised settings")
         app.config.update(mail_settings)
         mail = Mail(app)
+        print("setup mail")
         with app.app_context():
             msg = Message(subject="WELCOME DEAR",
                       sender=app.config.get("MAIL_USERNAME"),
